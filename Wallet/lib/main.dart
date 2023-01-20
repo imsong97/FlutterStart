@@ -103,9 +103,9 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               children: [
-                Expanded(child: radiusButton("Transfer", Colors.amber), flex: 1,),
+                expandedButton(radiusButton("Transfer", Colors.amber)),
                 SizedBox(width: 20,),
-                Expanded(child: radiusButton("Request", Colors.grey), flex: 1)
+                expandedButton(radiusButton("Request", Colors.grey))
               ],
             ),
           ],
@@ -113,6 +113,10 @@ class _MyHomePageState extends State<MyHomePage> {
       )
     );
   }
+}
+
+Expanded expandedButton(Container containerChild) {
+  return Expanded(child: containerChild, flex: 1,);
 }
 
 Container radiusButton(String text, MaterialColor color) {
