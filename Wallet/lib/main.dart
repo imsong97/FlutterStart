@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -63,53 +65,65 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      backgroundColor: const Color(0xFF18181818),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 40),
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 80,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const Text("Hey, Ch0pp4", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w600),),
+                    Text("Welcome back", style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 14),)
+                  ],)
+              ],
             ),
+            SizedBox(height: 120,),
             Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+              "Total Balance",
+              style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 22),
+            ),
+            SizedBox(height: 10,),
+            Text(
+              "\$5 194 482",
+              style: TextStyle(
+                fontSize: 44,
+                fontWeight: FontWeight.w600,
+                color: Colors.white
+              ),
+            ),
+            SizedBox(height: 25,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Expanded(child: radiusButton("Transfer", Colors.amber), flex: 1,),
+                SizedBox(width: 20,),
+                Expanded(child: radiusButton("Request", Colors.grey), flex: 1)
+              ],
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      )
     );
   }
+}
+
+Container radiusButton(String text, MaterialColor color) {
+  return Container(
+      decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(45)
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
+        child: Text(text, style: TextStyle(fontSize: 16), textAlign: TextAlign.center,),
+      )
+  );
 }
