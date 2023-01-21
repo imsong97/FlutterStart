@@ -1,6 +1,8 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:wallet/CardView.dart';
 
 void main() {
   runApp(const MyApp());
@@ -66,49 +68,64 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF18181818),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 80,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    const Text("Hey, Ch0pp4", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w600),),
-                    Text("Welcome back", style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 14),)
-                  ],)
-              ],
-            ),
-            SizedBox(height: 120,),
-            Text(
-              "Total Balance",
-              style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 22),
-            ),
-            SizedBox(height: 10,),
-            Text(
-              "\$5 194 482",
-              style: TextStyle(
-                fontSize: 44,
-                fontWeight: FontWeight.w600,
-                color: Colors.white
+      backgroundColor: const Color(0xFF181818),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 80,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      const Text("Hey, Ch0pp4", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w600),),
+                      Text("Welcome back", style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 14),)
+                    ],)
+                ],
               ),
-            ),
-            SizedBox(height: 25,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                expandedButton(radiusButton("Transfer", Colors.amber)),
-                SizedBox(width: 20,),
-                expandedButton(radiusButton("Request", Colors.grey))
-              ],
-            ),
-          ],
+              SizedBox(height: 120,),
+              Text(
+                "Total Balance",
+                style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 22),
+              ),
+              SizedBox(height: 10,),
+              const Text(
+                "\$5 194 482",
+                style: TextStyle(
+                  fontSize: 44,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white
+                ),
+              ),
+              SizedBox(height: 25,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  expandedButton(radiusButton("Transfer", Colors.amber)),
+                  SizedBox(width: 20,),
+                  expandedButton(radiusButton("Request", const Color(0xFF1F2123), textColor: Colors.white))
+                ],
+              ),
+              SizedBox(height: 100,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: const [
+                  Text("Wallets", style: TextStyle(color: Colors.white, fontSize: 36, fontWeight: FontWeight.w600),),
+                  Text("View All", style: TextStyle(color: Colors.white, fontSize: 18),)
+                ],
+              ),
+              SizedBox(height: 20,),
+              CardView(money: "Euro", property: "6 428", unit: "EUR", backgroundColor: Color(0xFF1F2123),contentColor: Colors.white),
+              Transform.translate(offset: Offset(0, -20), child: CardView(money: "Dollar", property: "6 428", unit: "USA", backgroundColor: Colors.white, contentColor: Color(0xFF1F2123))),
+              Transform.translate(offset: Offset(0, -40), child: CardView(money: "Bitcoin", property: "6 428", unit: "BTC", backgroundColor: Color(0xFF1F2123), contentColor: Colors.white))
+            ],
+          ),
         ),
       )
     );
@@ -119,15 +136,16 @@ Expanded expandedButton(Container containerChild) {
   return Expanded(child: containerChild, flex: 1,);
 }
 
-Container radiusButton(String text, MaterialColor color) {
+Container radiusButton(String text, Color backgroundColor, {Color? textColor}) {
   return Container(
       decoration: BoxDecoration(
-          color: color,
+          color: backgroundColor,
           borderRadius: BorderRadius.circular(45)
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
-        child: Text(text, style: TextStyle(fontSize: 16), textAlign: TextAlign.center,),
+        child: Text(text, style: TextStyle(color: textColor, fontSize: 16,), textAlign: TextAlign.center,),
       )
   );
 }
+
