@@ -14,6 +14,11 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        textTheme: TextTheme(
+          subtitle1: TextStyle(
+            color: Colors.green, fontWeight: FontWeight.w600
+          )
+        )
       ),
       home: const MyHomePage(title: 'Stateful Widget'),
     );
@@ -30,38 +35,67 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  bool counterIsWarning = false;
 
   void _incrementCounter() {
+    // setState(() {
+    //   _counter++;
+    //   if (_counter > -5) {
+    //     counterIsWarning = false;
+    //   }
+    // });
+    // or
+    _counter++;
+    if (_counter > -4) {
+      counterIsWarning = false;
+    }
+    setState(() {}); // rebuild -> call build(context) method
+  }
+
+  void decrementCounter() {
     setState(() {
-      _counter++;
+      _counter--;
+      if (_counter < -4) {
+        counterIsWarning = true;
+      }
+    });
+  }
+
+  void refreshCounter() {
+    setState(() {
+      _counter = 0;
+      counterIsWarning = false;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+        appBar: AppBar(
+          title: Text(widget.title),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'You have pushed the button this many times:',
+                style: Theme.of(context).textTheme.subtitle1, // access parent's theme
+              ),
+              Text(
+                '$_counter',
+                style: TextStyle(color: counterIsWarning ? Colors.red : Colors.grey, fontSize: 30),
+              ),
+              IconButton(onPressed: _incrementCounter, icon: Icon(Icons.add_circle), iconSize: 50),
+              IconButton(onPressed: decrementCounter, icon: Icon(Icons.remove_circle), iconSize: 50,)
+            ],
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: refreshCounter,
+          tooltip: 'Refresh',
+          child: const Icon(Icons.refresh),
+        ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
