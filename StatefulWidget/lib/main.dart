@@ -37,6 +37,20 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   bool counterIsWarning = false;
 
+  @override
+  void initState() {
+    super.initState();
+    // always call before build(BuildContext context) method
+    // onResume() in android
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // call when State is now showing
+    // it removed in WidgetTree
+  }
+
   void _incrementCounter() {
     // setState(() {
     //   _counter++;
