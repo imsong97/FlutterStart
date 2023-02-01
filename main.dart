@@ -74,6 +74,32 @@ enum EnumValue {
   TYPE_A, TYPE_B
 }
 
+// Mixin => like interface ??
+// but, don't have to override
+// be able to multiple inheritance
+class LikeInterface {
+  String defaultValue = "value";
+  void default() {
+    print("default method");
+  }
+}
+
+// Mixin => use with keyword
+class ParentClass with LikeInterface {
+
+  // don't need to override
+  @override
+  void default() {
+    print("override default method");
+  }
+}
+
+void main2() {
+  var instance = ParentClass();
+  instance.default(); // "override default method"
+  instance.defaultValue // "value"
+}
+
 
 
 
