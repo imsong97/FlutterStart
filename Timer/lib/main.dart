@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:timer/HomeScreen.dart';
 
 void main() {
-  runApp(const MyApp()); // commit for source tree
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
