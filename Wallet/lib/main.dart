@@ -1,8 +1,6 @@
 import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:wallet/CardView.dart';
 
 void main() {
   runApp(const MyApp());
@@ -52,17 +50,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  late final List<String> _dateList = [];
+  late int _nowDate;
+  late int _nowWeekDay;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  @override
+  void initState() {
+    super.initState();
+    DateTime now = DateTime.now();
+    _nowDate = now.day;
+    _nowWeekDay = now.weekday;
+
+    _dateList.add("TODAY");
+    for(int i = _nowDate + 1; i < 31; i++) {
+      _dateList.add("$i");
+    }
   }
 
   @override
@@ -75,77 +77,125 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 80,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      const Text("Hey, Ch0pp4", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w600),),
-                      Text("Welcome back", style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 14),)
-                    ],)
-                ],
-              ),
-              SizedBox(height: 120,),
-              Text(
-                "Total Balance",
-                style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 22),
-              ),
-              SizedBox(height: 10,),
-              const Text(
-                "\$5 194 482",
-                style: TextStyle(
-                  fontSize: 44,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white
-                ),
-              ),
-              SizedBox(height: 25,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  expandedButton(radiusButton("Transfer", Colors.amber)),
-                  SizedBox(width: 20,),
-                  expandedButton(radiusButton("Request", const Color(0xFF1F2123), textColor: Colors.white))
-                ],
-              ),
-              SizedBox(height: 100,),
+              const SizedBox(height: 70,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: const [
-                  Text("Wallets", style: TextStyle(color: Colors.white, fontSize: 36, fontWeight: FontWeight.w600),),
-                  Text("View All", style: TextStyle(color: Colors.white, fontSize: 18),)
+                  CircleAvatar(radius: 30, backgroundImage: AssetImage(''),),
+                  Icon(Icons.add, color: Colors.white, size: 50,)
                 ],
               ),
+              SizedBox(height: 50,),
+              Text(
+                _getTodayDate(),
+                style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 22),
+              ),
+              SizedBox(height: 10,),
+              Container(
+                height: 90,
+                child: ListView.builder(
+                  itemCount: _dateList.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, i) {
+                    return Container(
+                      padding: EdgeInsets.only(left: i == 0 ? 0 : 10, top: 10, right: 10, bottom: 0),
+                      child: Text(_dateList[i], style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 52)),
+                    );
+                }, ),
+              ),
               SizedBox(height: 20,),
-              CardView(money: "Euro", property: "6 428", unit: "EUR", backgroundColor: Color(0xFF1F2123),contentColor: Colors.white),
-              Transform.translate(offset: Offset(0, -20), child: CardView(money: "Dollar", property: "6 428", unit: "USA", backgroundColor: Colors.white, contentColor: Color(0xFF1F2123))),
-              Transform.translate(offset: Offset(0, -40), child: CardView(money: "Bitcoin", property: "6 428", unit: "BTC", backgroundColor: Color(0xFF1F2123), contentColor: Colors.white))
+              CardView(bigTitle: "DESIGN\nMETTING", startHour: "11", endHour: "12", backgroundColor: Colors.yellow, contentColor: Colors.black, startMin: "30", endMin: "20",),
+              SizedBox(height: 7,),
+              CardView(bigTitle: "DAILY\nPROJECT", startHour: "12", endHour: "14", backgroundColor: Color(0xFF81498B), contentColor: Colors.black, startMin: "35", endMin: "10"),
+              SizedBox(height: 7,),
+              CardView(bigTitle: "WEEKLY\nPLANNING", startHour: "15", endHour: "16", backgroundColor: Colors.green, contentColor: Colors.black, startMin: "00", endMin: "30")
             ],
           ),
         ),
       )
     );
   }
+
+  String _getTodayDate() {
+    List<String> daysOfWeek = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+    return "${daysOfWeek[_nowWeekDay]} $_nowDate";
+  }
 }
 
-Expanded expandedButton(Container containerChild) {
-  return Expanded(child: containerChild, flex: 1,);
-}
+class CardView extends StatelessWidget {
+  final String bigTitle, startHour, endHour, startMin, endMin;
+  final Color backgroundColor, contentColor;
 
-Container radiusButton(String text, Color backgroundColor, {Color? textColor}) {
-  return Container(
+  const CardView({
+    required this.bigTitle,
+    required this.startHour,
+    required this.endHour,
+    required this.backgroundColor,
+    required this.contentColor,
+    required this.startMin,
+    required this.endMin
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
           color: backgroundColor,
-          borderRadius: BorderRadius.circular(45)
+          borderRadius: BorderRadius.circular(20)
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
-        child: Text(text, style: TextStyle(color: textColor, fontSize: 16,), textAlign: TextAlign.center,),
-      )
-  );
+        padding: const EdgeInsets.all(20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  _customHourText(startHour, 20),
+                  _customHourText(startMin, 10),
+                  Icon(Icons.more_vert, size: 30,),
+                  _customHourText(endHour, 20),
+                  _customHourText(endMin, 10)
+                ]
+            ),
+            SizedBox(width: 10,),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(bigTitle, style: TextStyle(color: contentColor, fontSize: 45, fontWeight: FontWeight.w600),),
+                  SizedBox(height: 10,),
+                  Row(
+                    children: [
+                      Text(
+                        "ALEX",
+                        style: TextStyle(color: Colors.grey, fontSize: 20, ),
+                      ),
+                      SizedBox(width: 5,),
+                      Text(
+                        "HELENA",
+                        style: TextStyle(color: Colors.grey, fontSize: 20, ),
+                      ),
+                      SizedBox(width: 5,),
+                      Text(
+                        "NANA",
+                        style: TextStyle(color: Colors.grey, fontSize: 20, ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Text _customHourText(String txt, double size) {
+    return Text(txt, style: TextStyle(color: contentColor, fontSize: size),);
+  }
 }
 
